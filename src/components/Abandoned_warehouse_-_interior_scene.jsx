@@ -15,7 +15,7 @@ import { BurbujaInformativa } from "./UI/BurbujaInformativa";
 
 export function AbandonedWarehouseInteriorScene(props) {
   const gl = useThree((state) => state.gl);
-  const { nodes, materials } = useGLTF("/public/abandoned_warehouse_-_interior_scene-transformed.glb");
+  const { nodes, materials } = useGLTF("./models/abandoned_warehouse_-_interior_scene-transformed.glb");
 
   // Estado para saber qué parte está seleccionada
   const [seleccionado, setSeleccionado] = useState(null);
@@ -373,4 +373,4 @@ export function AbandonedWarehouseInteriorScene(props) {
   );
 }
 
-useGLTF.preload("/public/abandoned_warehouse_-_interior_scene-transformed.glb");
+useGLTF.preload("./models/abandoned_warehouse_-_interior_scene-transformed.glb");

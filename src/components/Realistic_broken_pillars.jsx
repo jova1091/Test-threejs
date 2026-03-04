@@ -14,7 +14,7 @@ import { useThree } from "@react-three/fiber";
 import { BurbujaInformativa } from "./UI/BurbujaInformativa";
 
 export function RealisticBrokenPillars(props) {
-  const { nodes, materials } = useGLTF("/public/realistic_broken_pillars-transformed.glb");
+  const { nodes, materials } = useGLTF("./models/realistic_broken_pillars-transformed.glb");
   const gl = useThree((state) => state.gl);
 
   // Estado para saber qué parte está seleccionada
@@ -84,4 +84,4 @@ export function RealisticBrokenPillars(props) {
   );
 }
 
-useGLTF.preload("/public/realistic_broken_pillars-transformed.glb");
+useGLTF.preload("./models/realistic_broken_pillars-transformed.glb");

@@ -15,7 +15,7 @@ import { BurbujaInformativa } from "./UI/BurbujaInformativa";
 
 export function Museo(props) {
   const gl = useThree((state) => state.gl);
-  const { nodes, materials } = useGLTF("/public/hintze_hall-transformed.glb");
+  const { nodes, materials } = useGLTF("./models/hintze_hall-transformed.glb");
 
   const [seleccionado, setSeleccionado] = useState(null);
 
@@ -82,4 +82,4 @@ export function Museo(props) {
   );
 }
 
-useGLTF.preload("/public/hintze_hall-transformed.glb");
+useGLTF.preload("./models/hintze_hall-transformed.glb");
