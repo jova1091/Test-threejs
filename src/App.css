@@ -1,0 +1,137 @@
+.app-container {
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #01173f, #000000);
+}
+
+.content-bubble {
+  padding: 15px;
+  width: 200px;
+  pointer-events: all;
+  background: rgba(44, 44, 44, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(44, 44, 44, 0.3);
+
+  h4 {
+    margin: 0 0 8px 0;
+    color: #ffffff;
+  }
+
+  p {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    color: #ffffff;
+    line-height: 1.4;
+  }
+}
+
+.button-bubble {
+  background: #3498db;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Contenedor principal del Sidebar */
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100dvh;
+  height: 100vh;
+  background: linear-gradient(180deg, #01173f, #000000);
+  backdrop-filter: blur(10px);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgb(61 61 61 / 60%);
+}
+
+/* Clases para abrir/cerrar */
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar.closed {
+  transform: translateX(-100%);
+}
+
+.sidebar-header {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.623);
+  padding: 10px;
+  justify-content: center;
+}
+
+/* Botón de toggle flotante */
+.toggle-menu {
+  position: absolute;
+  top: 20px;
+  z-index: 101;
+  background: #3498db;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+/* Estilo de los botones dentro del menú */
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.menu-items button {
+  text-align: left;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-items hr {
+  width: 100%;
+  border: 0px;
+  border-top: 1px solid #676767;
+  margin: 10px 0;
+}
+
+.btn-active {
+  background: #3498db;
+  color: rgb(0, 0, 0);
+}
+
+.btn-inactive {
+  background: transparent;
+  color: #ececec;
+}
+
+.btn-inactive:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
