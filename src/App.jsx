@@ -25,7 +25,7 @@ function App() {
         <XRComponent store={store}>
           <ambientLight intensity={0.5} />
           <EscenaArquitectura modeloActual={modeloActual} />
-          <OrbitControls makeDefault />
+          <OrbitControls makeDefault key={modeloActual} />
         </XRComponent>
       </Canvas>
     </div>

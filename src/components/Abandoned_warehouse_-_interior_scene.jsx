@@ -8,75 +8,24 @@ Source: https://sketchfab.com/3d-models/abandoned-warehouse-interior-scene-1d528
 Title: Abandoned Warehouse - Interior Scene
 */
 
-import { useState } from "react";
-import { useThree } from "@react-three/fiber";
-import { useGLTF, Html } from "@react-three/drei";
-import { BurbujaInformativa } from "./UI/BurbujaInformativa";
+import { useGLTF } from "@react-three/drei";
+import { MallaInteractiva } from "./MallaInteractiva";
 
 export function AbandonedWarehouseInteriorScene(props) {
-  const gl = useThree((state) => state.gl);
   const { nodes, materials } = useGLTF("./models/abandoned_warehouse_-_interior_scene-transformed.glb");
-
-  // Estado para saber qué parte está seleccionada
-  const [seleccionado, setSeleccionado] = useState(null);
-
-  // Ahora el estado guarda la posición exacta del clic
-  const [puntoBurbuja, setPuntoBurbuja] = useState(null);
-  const [datosBurbuja, setDatosBurbuja] = useState({ titulo: "", texto: "" });
-
-  const manejarClic = (e, titulo, texto) => {
-    e.stopPropagation(); // Evita que el clic atraviese varios objetos
-
-    // Convertimos el punto de impacto (World) a coordenadas locales del objeto
-    // Clonamos para no modificar el evento original
-    const worldPoint = e.point.clone();
-    worldPoint.y += 0.5; // Ajuste de altura en el mundo (offset vertical)
-    const localPoint = e.object.worldToLocal(worldPoint);
-
-    setPuntoBurbuja([localPoint.x, localPoint.y, localPoint.z]);
-    setDatosBurbuja({ titulo, texto });
-  };
 
   return (
     <group {...props} dispose={null}>
-      <mesh
+      <MallaInteractiva
         geometry={nodes.TexturesCom_WindowsBacklit0019_13_M_0.geometry}
         material={materials["fenetre.006"]}
         position={[14.282, 0.412, -0.052]}
         scale={3.51}
-        onPointerOver={() => (document.body.style.cursor = "pointer")}
-        onPointerOut={() => (document.body.style.cursor = "auto")}
-        onClick={(e) => {
-          const isPresenting = gl.xr.isPresenting;
-
-          // En modo AR, si el modelo aún no ha sido colocado, no hacemos nada.
-          if (isPresenting) {
-            // e.object.parent es el <group> de este componente.
-            // e.object.parent.parent es el <group> de InteractivoAR.
-            const modelContainerGroup = e.object.parent?.parent;
-            if (modelContainerGroup && modelContainerGroup.position.lengthSq() < 0.001) {
-              return; // No hacer nada. El clic es para colocar el modelo.
-            }
-          }
-          e.stopPropagation();
-          setSeleccionado("fenetre");
-          manejarClic(e, "Fenetre", "Capa de fenetre.");
+        info={{
+          titulo: "Fenetre",
+          texto: "Capa de fenetre.",
         }}
-      >
-        {/* Si está seleccionado, mostramos la burbuja justo aquí */}
-        {seleccionado === "fenetre" && (
-          <Html position={puntoBurbuja} center>
-            <BurbujaInformativa
-              titulo={datosBurbuja.titulo}
-              texto={datosBurbuja.texto}
-              alCerrar={() => {
-                setSeleccionado(null);
-                setPuntoBurbuja(null);
-              }}
-            />
-          </Html>
-        )}
-      </mesh>
+      />
       <mesh
         geometry={nodes.TexturesCom_WindowsBacklit0019_14_M_0.geometry}
         material={materials["fenetre.005"]}
@@ -194,78 +143,22 @@ export function AbandonedWarehouseInteriorScene(props) {
         position={[16.878, -1.428, -7.564]}
         rotation={[0, Math.PI / 2, 0]}
         scale={3.51}
-        onPointerOver={() => (document.body.style.cursor = "pointer")}
-        onPointerOut={() => (document.body.style.cursor = "auto")}
-        onClick={(e) => {
-          const isPresenting = gl.xr.isPresenting;
-
-          // En modo AR, si el modelo aún no ha sido colocado, no hacemos nada.
-          if (isPresenting) {
-            // e.object.parent es el <group> de este componente.
-            // e.object.parent.parent es el <group> de InteractivoAR.
-            const modelContainerGroup = e.object.parent?.parent;
-            if (modelContainerGroup && modelContainerGroup.position.lengthSq() < 0.001) {
-              return; // No hacer nada. El clic es para colocar el modelo.
-            }
-          }
-          e.stopPropagation();
-          setSeleccionado("doorsWoodBarn");
-          manejarClic(e, "Puerta de madera", "Capa de puerta de madera.");
+        info={{
+          titulo: "Puerta de madera",
+          texto: "Capa de puerta de madera.",
         }}
-      >
-        {/* Si está seleccionado, mostramos la burbuja justo aquí */}
-        {seleccionado === "doorsWoodBarn" && (
-          <Html position={puntoBurbuja} center>
-            <BurbujaInformativa
-              titulo={datosBurbuja.titulo}
-              texto={datosBurbuja.texto}
-              alCerrar={() => {
-                setSeleccionado(null);
-                setPuntoBurbuja(null);
-              }}
-            />
-          </Html>
-        )}
-      </mesh>
-      <mesh
+      />
+      <MallaInteractiva
         geometry={nodes.Plane008_0.geometry}
         material={materials.chaise}
         position={[3.842, -2.444, -5.926]}
         rotation={[-Math.PI / 2, 0, 0.925]}
         scale={0.178}
-        onPointerOver={() => (document.body.style.cursor = "pointer")}
-        onPointerOut={() => (document.body.style.cursor = "auto")}
-        onClick={(e) => {
-          const isPresenting = gl.xr.isPresenting;
-
-          // En modo AR, si el modelo aún no ha sido colocado, no hacemos nada.
-          if (isPresenting) {
-            // e.object.parent es el <group> de este componente.
-            // e.object.parent.parent es el <group> de InteractivoAR.
-            const modelContainerGroup = e.object.parent?.parent;
-            if (modelContainerGroup && modelContainerGroup.position.lengthSq() < 0.001) {
-              return; // No hacer nada. El clic es para colocar el modelo.
-            }
-          }
-          e.stopPropagation();
-          setSeleccionado("chaise");
-          manejarClic(e, "Chaise", "Capa de chaise.");
+        info={{
+          titulo: "Chaise",
+          texto: "Capa de chaise.",
         }}
-      >
-        {/* Si está seleccionado, mostramos la burbuja justo aquí */}
-        {seleccionado === "chaise" && (
-          <Html position={puntoBurbuja} center>
-            <BurbujaInformativa
-              titulo={datosBurbuja.titulo}
-              texto={datosBurbuja.texto}
-              alCerrar={() => {
-                setSeleccionado(null);
-                setPuntoBurbuja(null);
-              }}
-            />
-          </Html>
-        )}
-      </mesh>
+      />
       <mesh
         geometry={nodes.BezierCurve006_0.geometry}
         material={materials.cable}
@@ -273,45 +166,17 @@ export function AbandonedWarehouseInteriorScene(props) {
         rotation={[-Math.PI / 2, 0, 0]}
         scale={3.51}
       />
-      <mesh
+      <MallaInteractiva
         geometry={nodes.Circle001_0.geometry}
         material={materials.lampe}
         position={[0, 0.728, -2.348]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
         scale={0.313}
-        onPointerOver={() => (document.body.style.cursor = "pointer")}
-        onPointerOut={() => (document.body.style.cursor = "auto")}
-        onClick={(e) => {
-          const isPresenting = gl.xr.isPresenting;
-
-          // En modo AR, si el modelo aún no ha sido colocado, no hacemos nada.
-          if (isPresenting) {
-            // e.object.parent es el <group> de este componente.
-            // e.object.parent.parent es el <group> de InteractivoAR.
-            const modelContainerGroup = e.object.parent?.parent;
-            if (modelContainerGroup && modelContainerGroup.position.lengthSq() < 0.001) {
-              return; // No hacer nada. El clic es para colocar el modelo.
-            }
-          }
-          e.stopPropagation();
-          setSeleccionado("lampe");
-          manejarClic(e, "Lámpara", "Capa de lámpara.");
+        info={{
+          titulo: "Lámpara",
+          texto: "Capa de lámpara.",
         }}
-      >
-        {/* Si está seleccionado, mostramos la burbuja justo aquí */}
-        {seleccionado === "lampe" && (
-          <Html position={puntoBurbuja} center>
-            <BurbujaInformativa
-              titulo={datosBurbuja.titulo}
-              texto={datosBurbuja.texto}
-              alCerrar={() => {
-                setSeleccionado(null);
-                setPuntoBurbuja(null);
-              }}
-            />
-          </Html>
-        )}
-      </mesh>
+      />
       <mesh
         geometry={nodes.Circle001_1.geometry}
         material={materials["lampe-interieure"]}

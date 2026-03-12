@@ -8,78 +8,23 @@ Source: https://sketchfab.com/3d-models/realistic-broken-pillars-b0d2bd3097e9444
 Title: Realistic Broken Pillars
 */
 
-import { useState } from "react";
 import { useGLTF, Html } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
-import { BurbujaInformativa } from "./UI/BurbujaInformativa";
+import { MallaInteractiva } from "./MallaInteractiva";
 
 export function RealisticBrokenPillars(props) {
   const { nodes, materials } = useGLTF("./models/realistic_broken_pillars-transformed.glb");
-  const gl = useThree((state) => state.gl);
-
-  // Estado para saber qué parte está seleccionada
-  const [seleccionado, setSeleccionado] = useState(null);
-
-  // Ahora el estado guarda la posición exacta del clic
-  const [puntoBurbuja, setPuntoBurbuja] = useState(null);
-  const [datosBurbuja, setDatosBurbuja] = useState({ titulo: "", texto: "" });
-
-  const manejarClic = (e, titulo, texto) => {
-    e.stopPropagation(); // Evita que el clic atraviese varios objetos
-
-    // Convertimos el punto de impacto (World) a coordenadas locales del objeto
-    // Clonamos para no modificar el evento original
-    const worldPoint = e.point.clone();
-    worldPoint.y += 0.5; // Ajuste de altura en el mundo (offset vertical)
-    const localPoint = e.object.worldToLocal(worldPoint);
-
-    setPuntoBurbuja([localPoint.x, localPoint.y, localPoint.z]);
-    setDatosBurbuja({ titulo, texto });
-  };
 
   return (
     <group {...props} dispose={null}>
-      <mesh
+      <MallaInteractiva
         geometry={nodes.Object_4.geometry}
         material={materials["Material.004"]}
         position={[0, 0, 0]}
-        onPointerOver={() => (document.body.style.cursor = "pointer")}
-        onPointerOut={() => (document.body.style.cursor = "auto")}
-        onClick={(e) => {
-          const isPresenting = gl.xr.isPresenting;
-
-          // En modo AR, si el modelo aún no ha sido colocado, no hacemos nada.
-          // Esto evita que la burbuja informativa se active cuando el usuario
-          // realmente intenta hacer clic en el aro de posicionamiento.
-          if (isPresenting) {
-            // Con la eliminación de <Stage>, la jerarquía es más simple.
-            // e.object.parent es el <group> de este componente.
-            // e.object.parent.parent es el <group> de InteractivoAR.
-            const modelContainerGroup = e.object.parent?.parent;
-            if (modelContainerGroup && modelContainerGroup.position.lengthSq() < 0.001) {
-              return; // No hacer nada. El clic es para colocar el modelo.
-            }
-          }
-
-          e.stopPropagation();
-          setSeleccionado("columna");
-          manejarClic(e, "Columna", "Soporta el peso estructural.");
+        info={{
+          titulo: "Columna",
+          texto: "Soporta el peso estructural.",
         }}
-      >
-        {/* Si está seleccionado, mostramos la burbuja justo aquí */}
-        {seleccionado === "columna" && (
-          <Html position={puntoBurbuja} center>
-            <BurbujaInformativa
-              titulo={datosBurbuja.titulo}
-              texto={datosBurbuja.texto}
-              alCerrar={() => {
-                setSeleccionado(null);
-                setPuntoBurbuja(null);
-              }}
-            />
-          </Html>
-        )}
-      </mesh>
+      />
     </group>
   );
 }

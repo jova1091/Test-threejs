@@ -8,74 +8,24 @@ Source: https://sketchfab.com/3d-models/hintze-hall-45f5e56887f44075bbf283977c99
 Title: Hintze Hall
 */
 
-import { useState } from "react";
-import { useThree } from "@react-three/fiber";
-import { useGLTF, Html } from "@react-three/drei";
-import { BurbujaInformativa } from "./UI/BurbujaInformativa";
+import { useGLTF } from "@react-three/drei";
+import { MallaInteractiva } from "./MallaInteractiva";
 
 export function Museo(props) {
-  const gl = useThree((state) => state.gl);
   const { nodes, materials } = useGLTF("./models/hintze_hall-transformed.glb");
-
-  const [seleccionado, setSeleccionado] = useState(null);
-
-  // Ahora el estado guarda la posición exacta del clic
-  const [puntoBurbuja, setPuntoBurbuja] = useState(null);
-  const [datosBurbuja, setDatosBurbuja] = useState({ titulo: "", texto: "" });
-
-  const manejarClic = (e, titulo, texto) => {
-    e.stopPropagation(); // Evita que el clic atraviese varios objetos
-
-    // Convertimos el punto de impacto (World) a coordenadas locales del objeto
-    // Clonamos para no modificar el evento original
-    const worldPoint = e.point.clone();
-    worldPoint.y += 0.5; // Ajuste de altura en el mundo (offset vertical)
-    const localPoint = e.object.worldToLocal(worldPoint);
-
-    setPuntoBurbuja([localPoint.x, localPoint.y, localPoint.z]);
-    setDatosBurbuja({ titulo, texto });
-  };
 
   return (
     <group {...props} dispose={null}>
-      <mesh
+      <MallaInteractiva
         geometry={nodes.Object_2.geometry}
         material={materials.NHMHintzeHall02_Model_9_u2_v1}
         rotation={[-Math.PI, 0, 0]}
         scale={1.429}
-        onPointerOver={() => (document.body.style.cursor = "pointer")} // Cambia el cursor al pasar encima
-        onPointerOut={() => (document.body.style.cursor = "auto")}
-        onClick={(e) => {
-          const isPresenting = gl.xr.isPresenting;
-
-          // En modo AR, si el modelo aún no ha sido colocado, no hacemos nada.
-          if (isPresenting) {
-            // e.object.parent es el <group> de este componente.
-            // e.object.parent.parent es el <group> de InteractivoAR.
-            const modelContainerGroup = e.object.parent?.parent;
-            if (modelContainerGroup && modelContainerGroup.position.lengthSq() < 0.001) {
-              return; // No hacer nada. El clic es para colocar el modelo.
-            }
-          }
-          e.stopPropagation();
-          setSeleccionado("museo");
-          manejarClic(e, "Museo", "Museo de arte.");
+        info={{
+          titulo: "Museo",
+          texto: "Museo de arte.",
         }}
-      >
-        {/* Si está seleccionado, mostramos la burbuja justo aquí */}
-        {seleccionado === "museo" && (
-          <Html position={puntoBurbuja} center>
-            <BurbujaInformativa
-              titulo={datosBurbuja.titulo}
-              texto={datosBurbuja.texto}
-              alCerrar={() => {
-                setSeleccionado(null);
-                setPuntoBurbuja(null);
-              }}
-            />
-          </Html>
-        )}
-      </mesh>
+      />
       <mesh geometry={nodes.Object_3.geometry} material={materials.NHMHintzeHall02_Model_9_u1_v1} rotation={[-Math.PI, 0, 0]} scale={1.429} />
       <mesh geometry={nodes.Object_45.geometry} material={materials.lambert4SG} rotation={[-Math.PI, 0, 0]} scale={1.429} />
     </group>
